@@ -1,5 +1,7 @@
 # Helper / dev notes (user keeps these local only)
 *.txt
+FULL_WORK_REPORT.md
+*.zip
 
 # Backend (Laravel)
 ac-tracker-backend/.env
