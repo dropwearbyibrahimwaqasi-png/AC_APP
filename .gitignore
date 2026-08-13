@@ -1,0 +1,25 @@
+# Helper / dev notes (user keeps these local only)
+*.txt
+
+# Backend (Laravel)
+ac-tracker-backend/.env
+ac-tracker-backend/vendor/
+ac-tracker-backend/node_modules/
+ac-tracker-backend/storage/*.key
+
+# Flutter / Android
+ac_tracker_mobile/.dart_tool/
+ac_tracker_mobile/build/
+ac_tracker_mobile/android/.gradle/
+ac_tracker_mobile/android/local.properties
+ac_tracker_mobile/android/build/
+ac_tracker_mobile/.idea/
+ac_tracker_mobile/*.iml
+ac_tracker_mobile/android/*.iml
+ac_tracker_mobile/ios/Pods/
+ac_tracker_mobile/ios/.symlinks/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.log
