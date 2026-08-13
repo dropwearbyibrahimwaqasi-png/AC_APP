@@ -5,4 +5,4 @@
 const String apiKey = 'dev-local-test-key-2026-change-me';
 
 // Your deployed Railway backend URL, ending in /api.
-const String apiBaseUrl = 'http://127.0.0.1:8000/api';
+const String apiBaseUrl = 'https://acapp-production.up.railway.app/api';
