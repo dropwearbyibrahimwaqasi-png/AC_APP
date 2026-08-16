@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../services/alarm_service.dart';
 import '../models/reminder.dart';
 import '../theme.dart';
 import 'add_reminder_screen.dart';
@@ -117,11 +118,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   const SizedBox(height: 20),
                   ElevatedButton.icon(
                     onPressed: () async {
-                      final created = await Navigator.push(
+                      final created = await Navigator.push<Reminder>(
                         context,
                         MaterialPageRoute(builder: (_) => const AddReminderScreen()),
                       );
-                      if (created != null) _refresh();
+                      if (created != null) {
+                        await AlarmService.scheduleForReminder(created);
+                        _refresh();
+                      }
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Add Reminder'),

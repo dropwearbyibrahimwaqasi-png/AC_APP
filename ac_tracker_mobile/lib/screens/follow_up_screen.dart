@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../models/reminder.dart';
@@ -16,12 +16,16 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
   final _noteController = TextEditingController();
   final ApiService _api = ApiService();
   DateTime? _nextDate;
-  File? _photo;
+  XFile? _photo;
+  Uint8List? _photoBytes;
   bool _saving = false;
 
   Future<void> _pickPhoto() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 70);
-    if (picked != null) setState(() => _photo = File(picked.path));
+    if (picked != null) {
+      final bytes = await picked.readAsBytes();
+      if (mounted) setState(() { _photo = picked; _photoBytes = bytes; });
+    }
   }
 
   Future<void> _pickNextDate() async {
@@ -109,7 +113,7 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
                     )
                   : ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.file(_photo!, fit: BoxFit.cover, width: double.infinity),
+                      child: Image.memory(_photoBytes!, fit: BoxFit.cover, width: double.infinity),
                     ),
             ),
           ),

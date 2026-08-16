@@ -36,7 +36,7 @@ class AppShell extends StatefulWidget {
   State<AppShell> createState() => _AppShellState();
 }
 
-class _AppShellState extends State<AppShell> {
+class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
   int _index = 0;
   StreamSubscription? _ringSub;
 
@@ -51,6 +51,7 @@ class _AppShellState extends State<AppShell> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     // Whenever a scheduled alarm starts ringing, jump to the full-screen
     // alert regardless of which tab is currently open.
     _ringSub = AlarmService.onRing((reminderId) {
@@ -59,6 +60,22 @@ class _AppShellState extends State<AppShell> {
       );
     });
     _setupLocationTracking();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // If the initial tracker start failed (Android only allows foreground
+    // service starts while the app is in the foreground), quietly retry
+    // whenever the app becomes active again.
+    if (state == AppLifecycleState.resumed) {
+      _retryLocationTracking();
+    }
+  }
+
+  Future<void> _retryLocationTracking() async {
+    if (await tracker.hasLocationPermissions()) {
+      await tracker.startLocationTracking();
+    }
   }
 
   // Runs once at app launch: asks for location permission, then starts
@@ -84,6 +101,7 @@ class _AppShellState extends State<AppShell> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _ringSub?.cancel();
     super.dispose();
   }

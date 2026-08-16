@@ -52,17 +52,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-
-        <!-- Override flutter_background_service's service to declare the
-             foreground service type (required on Android 14+ / targetSdk 34+).
-             Without android:foregroundServiceType the app crashes on launch with
-             MissingForegroundServiceTypeException. -->
-        <service
-            android:name="id.flutter.flutter_background_service.BackgroundService"
-            android:enabled="true"
-            android:exported="true"
-            android:stopWithTask="false"
-            android:foregroundServiceType="location" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

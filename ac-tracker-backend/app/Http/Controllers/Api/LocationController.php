@@ -60,6 +60,12 @@ class LocationController extends Controller
             'stays' => $this->clusterIntoStays($points),
             'distance_km' => round($this->totalDistanceMeters($points) / 1000, 1),
             'tracked_minutes' => $this->trackedMinutes($points),
+            // Raw GPS fixes received today, before clustering/filtering — if
+            // this is 0, no pings are arriving at all (permission/stream
+            // problem on the phone). If this is >0 but stays is empty, pings
+            // are arriving fine and it's just too early for any of them to
+            // reach the 5-minute minimum stay duration.
+            'raw_point_count' => $points->count(),
         ]);
     }
 

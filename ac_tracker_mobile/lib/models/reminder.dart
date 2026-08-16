@@ -25,7 +25,7 @@ class Reminder {
       description: json['description'],
       location: json['location'],
       remindAt: DateTime.parse(json['remind_at']),
-      status: json['status'],
+      status: json['status'] ?? 'pending',
       followUpNote: json['follow_up_note'],
       followUpPhotoPath: json['follow_up_photo_path'],
       nextReminderId: json['next_reminder_id'],

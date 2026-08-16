@@ -109,7 +109,24 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
               ),
               Expanded(
                 child: points.isEmpty
-                    ? const Center(child: Text('No location data yet today.'))
+                    ? Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text('No location data yet today.'),
+                            const SizedBox(height: 6),
+                            Text(
+                              summary == null
+                                  ? ''
+                                  : summary.rawPointCount == 0
+                                      ? 'No GPS fixes received yet — check location permission is set to "Allow all the time".'
+                                      : '${summary.rawPointCount} GPS fix(es) received, none have stayed in one place for 5+ min yet.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                            ),
+                          ],
+                        ),
+                      )
                     : FlutterMap(
                         options: MapOptions(initialCenter: points.last, initialZoom: 13),
                         children: [

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:alarm/utils/alarm_set.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../models/reminder.dart';
 
 /// Schedules reminders as real alarms — full-screen, looping sound and
@@ -8,6 +9,7 @@ import '../models/reminder.dart';
 /// instead of a normal notification that's easy to miss in the field.
 class AlarmService {
   static Future<void> init() async {
+    if (kIsWeb) return;
     await Alarm.init();
   }
 
@@ -16,6 +18,7 @@ class AlarmService {
     required String description,
     required DateTime dateTime,
   }) async {
+    if (kIsWeb) return;
     final settings = AlarmSettings(
       id: id,
       dateTime: dateTime,
@@ -59,6 +62,7 @@ class AlarmService {
   }
 
   static Future<void> cancel(int reminderId) async {
+    if (kIsWeb) return;
     await Alarm.stop(reminderId);
   }
 
@@ -66,6 +70,9 @@ class AlarmService {
   /// starts ringing, so the UI can jump to the full-screen alert screen
   /// regardless of which tab is currently open.
   static StreamSubscription<AlarmSet> onRing(void Function(int reminderId) callback) {
+    if (kIsWeb) {
+      return Stream<AlarmSet>.empty().listen((_) {});
+    }
     return Alarm.ringing.listen((alarmSet) {
       for (final alarm in alarmSet.alarms) {
         callback(alarm.id);

@@ -27,7 +27,7 @@ class ReminderController extends Controller
             'remind_at' => 'required|date',
         ]);
 
-        $reminder = Reminder::create($validated);
+        $reminder = Reminder::create([...$validated, 'status' => 'pending']);
 
         return response()->json($reminder, 201);
     }
@@ -80,6 +80,7 @@ class ReminderController extends Controller
             $nextReminder = Reminder::create([
                 'description' => $validated['next_reminder_description'],
                 'remind_at' => $validated['next_reminder_at'],
+                'status' => 'pending',
             ]);
         }
 
